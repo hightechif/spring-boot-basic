@@ -21,9 +21,11 @@ public class Student {
     @Transient
     private Integer age;
 
+    // Empty Constructor
     public Student() {
     }
 
+    // Constructor with Attributes
     public Student(String first_name, String last_name, LocalDate dob) {
         this.first_name = first_name;
         this.last_name = last_name;
