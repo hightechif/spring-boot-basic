@@ -1,11 +1,14 @@
 package com.fadhil.basicspringboot.controller;
 
+import com.fadhil.basicspringboot.dto.CustomerDTO;
 import com.fadhil.basicspringboot.model.Customer;
 import com.fadhil.basicspringboot.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Controller are where all routing
@@ -28,7 +31,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/get-all", method = RequestMethod.GET)
-    public Iterable<Customer> getAll() {
+    public List<CustomerDTO> getAll() {
         return customerService.getAllCustomer();
     }
 
