@@ -17,6 +17,7 @@ public class Student {
     private Long id;
     private String first_name;
     private String last_name;
+    private String email;
     private LocalDate dob;   // date of birth
     @Transient
     private Integer age;
@@ -26,9 +27,12 @@ public class Student {
     }
 
     // Constructor with Attributes
-    public Student(String first_name, String last_name, LocalDate dob) {
+
+
+    public Student(String first_name, String last_name, String email, LocalDate dob) {
         this.first_name = first_name;
         this.last_name = last_name;
+        this.email = email;
         this.dob = dob;
     }
 
@@ -56,6 +60,22 @@ public class Student {
         this.last_name = last_name;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
     public Integer getAge() {
         return Period.between(this.dob, LocalDate.now()).getYears();
     }
@@ -66,6 +86,7 @@ public class Student {
                 "id=" + id +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
+                ", email='" + email + '\'' +
                 ", dob=" + dob +
                 ", age=" + age +
                 '}';
