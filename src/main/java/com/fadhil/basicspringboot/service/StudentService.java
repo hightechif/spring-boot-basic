@@ -1,5 +1,6 @@
 package com.fadhil.basicspringboot.service;
 
+import com.fadhil.basicspringboot.dto.StudentDTO;
 import com.fadhil.basicspringboot.model.Student;
 import com.fadhil.basicspringboot.repository.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -18,6 +20,17 @@ public class StudentService {
     @Autowired
     public StudentService(StudentRepo studentRepo) {
         this.studentRepo = studentRepo;
+    }
+
+    // Convert to DTO;
+    private StudentDTO convertToDTO(Student student) {
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setId(student.getId());
+        studentDTO.setFirst_name(student.getFirst_name());
+        studentDTO.setLast_name(student.getLast_name());
+        studentDTO.setEmail(student.getEmail());
+        studentDTO.setAge(student.getAge());
+        return studentDTO;
     }
 
     // CREATE New Student
@@ -30,18 +43,28 @@ public class StudentService {
     }
 
     // READ All Students or by Email
-    public List<Student> getAllStudents() {
-        return studentRepo.findAll();
+    public List<StudentDTO> getAllStudents() {
+        List<Student> students = studentRepo.findAll();
+        return students.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     // READ Student by ID
-    public Optional<Student> getStudentById(Long studentId) {
-        return studentRepo.findById(studentId);
+    public Optional<StudentDTO> getStudentById(Long studentId) {
+        Optional<Student> studentOptional = studentRepo.findById(studentId);
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setId(studentOptional.get().getId());
+        studentDTO.setFirst_name(studentOptional.get().getFirst_name());
+        studentDTO.setLast_name(studentOptional.get().getLast_name());
+        studentDTO.setEmail(studentOptional.get().getEmail());
+        studentDTO.setAge(studentOptional.get().getAge());
+        Optional<StudentDTO> studentDTOOptional = Optional.of(studentDTO);
+        return studentDTOOptional;
     }
 
     // READ Student by Email
-    public Iterable<Student> getStudentByEmail(String email) {
-        return studentRepo.getByEmail(email);
+    public StudentDTO getStudentByEmail(String email) {
+        Student student = studentRepo.getByEmail(email);
+        return convertToDTO(student);
     }
 
     // UPDATE Student

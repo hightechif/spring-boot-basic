@@ -1,5 +1,6 @@
 package com.fadhil.basicspringboot.controller;
 
+import com.fadhil.basicspringboot.dto.StudentDTO;
 import com.fadhil.basicspringboot.model.Student;
 import com.fadhil.basicspringboot.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +26,17 @@ public class StudentController {
     }
 
     @GetMapping(path = "/get-all")
-    public List<Student> getAllStudents() {
+    public List<StudentDTO> getAllStudents() {
         return studentService.getAllStudents();
     }
 
     @GetMapping(path = "/get/{studentId}")
-    public Optional<Student> getStudentById(@PathVariable("studentId") Long studentId) {
+    public Optional<StudentDTO> getStudentById(@PathVariable("studentId") Long studentId) {
         return studentService.getStudentById(studentId);
     }
 
     @GetMapping(path = "/get-by-email")
-    public Iterable<Student> getStudentByEmail(@RequestParam String email) {
+    public StudentDTO getStudentByEmail(@RequestParam String email) {
         return studentService.getStudentByEmail(email);
     }
 
