@@ -1,5 +1,6 @@
 package com.fadhil.basicspringboot.controller;
 
+import com.fadhil.basicspringboot.dto.ResponseDTO;
 import com.fadhil.basicspringboot.dto.StudentDTO;
 import com.fadhil.basicspringboot.model.Student;
 import com.fadhil.basicspringboot.service.StudentService;
@@ -21,8 +22,8 @@ public class StudentController {
     }
 
     @PostMapping(path = "/create-new")
-    public void addNewStudent(@RequestBody Student student) {
-        studentService.addNewStudent(student);
+    public StudentDTO addNewStudent(@RequestBody Student student) {
+        return studentService.addNewStudent(student);
     }
 
     @GetMapping(path = "/get-all")
@@ -42,13 +43,13 @@ public class StudentController {
 
     @PutMapping(path = "/edit/{studentId}")
     public void updateStudent(@PathVariable("studentId") Long studentId,
-                              @RequestParam(required = false) String first_name,
-                              @RequestParam(required = false) String last_name) {
-        studentService.updateStudent(studentId, first_name, last_name);
+                              @RequestParam(required = false) String firstName,
+                              @RequestParam(required = false) String lastName) {
+        studentService.updateStudent(studentId, firstName, lastName);
     }
 
     @DeleteMapping(path = "/delete/{studentId}")
-    public void deleteStudent(@PathVariable("studentId") Long studentId) {
-        studentService.deleteStudent(studentId);
+    public ResponseDTO deleteStudent(@PathVariable("studentId") Long studentId) {
+        return studentService.deleteStudent(studentId);
     }
 }

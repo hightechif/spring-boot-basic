@@ -15,8 +15,9 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
+    @Column(unique = true)
     private String email;
     private LocalDate dob;   // date of birth
     @Transient
@@ -27,11 +28,9 @@ public class Student {
     }
 
     // Constructor with Attributes
-
-
-    public Student(String first_name, String last_name, String email, LocalDate dob) {
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public Student(String firstName, String lastName, String email, LocalDate dob) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.dob = dob;
     }
@@ -44,20 +43,20 @@ public class Student {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -84,8 +83,8 @@ public class Student {
     public String toString() {
         return "Student{" +
                 "id=" + id +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
+                ", first_name='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", dob=" + dob +
                 ", age=" + age +

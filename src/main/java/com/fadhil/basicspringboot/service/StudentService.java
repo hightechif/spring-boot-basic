@@ -1,5 +1,6 @@
 package com.fadhil.basicspringboot.service;
 
+import com.fadhil.basicspringboot.dto.ResponseDTO;
 import com.fadhil.basicspringboot.dto.StudentDTO;
 import com.fadhil.basicspringboot.model.Student;
 import com.fadhil.basicspringboot.repository.StudentRepo;
@@ -26,23 +27,24 @@ public class StudentService {
     private StudentDTO convertToDTO(Student student) {
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setId(student.getId());
-        studentDTO.setFirst_name(student.getFirst_name());
-        studentDTO.setLast_name(student.getLast_name());
+        studentDTO.setFirstName(student.getFirstName());
+        studentDTO.setLastName(student.getLastName());
         studentDTO.setEmail(student.getEmail());
         studentDTO.setAge(student.getAge());
         return studentDTO;
     }
 
     // CREATE New Student
-    public void addNewStudent(Student student) {
+    public StudentDTO addNewStudent(Student student) {
         Optional<Student> studentOptional = studentRepo.findStudentByEmail(student.getEmail());
         if (studentOptional.isPresent()) {
             throw new IllegalStateException("email already exist");
         }
-        studentRepo.save(student);
+        Student result = studentRepo.save(student);
+        return convertToDTO(result);
     }
 
-    // READ All Students or by Email
+    // READ All Students
     public List<StudentDTO> getAllStudents() {
         List<Student> students = studentRepo.findAll();
         return students.stream().map(this::convertToDTO).collect(Collectors.toList());
@@ -51,10 +53,13 @@ public class StudentService {
     // READ Student by ID
     public Optional<StudentDTO> getStudentById(Long studentId) {
         Optional<Student> studentOptional = studentRepo.findById(studentId);
+        if (!studentOptional.isPresent()) {
+            throw new IllegalStateException("student with id "+ studentId +" does not exist");
+        }
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setId(studentOptional.get().getId());
-        studentDTO.setFirst_name(studentOptional.get().getFirst_name());
-        studentDTO.setLast_name(studentOptional.get().getLast_name());
+        studentDTO.setFirstName(studentOptional.get().getFirstName());
+        studentDTO.setLastName(studentOptional.get().getLastName());
         studentDTO.setEmail(studentOptional.get().getEmail());
         studentDTO.setAge(studentOptional.get().getAge());
         Optional<StudentDTO> studentDTOOptional = Optional.of(studentDTO);
@@ -69,23 +74,24 @@ public class StudentService {
 
     // UPDATE Student
     @Transactional
-    public void updateStudent(Long studentId, String first_name, String last_name) {
+    public void updateStudent(Long studentId, String firstName, String lastName) {
         Student student = studentRepo.findById(studentId)
                 .orElseThrow(() -> new IllegalStateException("student with id " + studentId + " does not exist"));
-        if (first_name != null && first_name.length() > 0 && !Objects.equals(student.getFirst_name(), first_name)) {
-            student.setFirst_name(first_name);
+        if (firstName != null && firstName.length() > 0 && !Objects.equals(student.getFirstName(), firstName)) {
+            student.setFirstName(firstName);
         }
-        if (last_name != null && last_name.length() > 0 && !Objects.equals(student.getLast_name(), last_name)) {
-            student.setLast_name(first_name);
+        if (lastName != null && lastName.length() > 0 && !Objects.equals(student.getLastName(), lastName)) {
+            student.setLastName(lastName);
         }
     }
 
     // DELETE Student
-    public void deleteStudent(Long studentId) {
+    public ResponseDTO deleteStudent(Long studentId) {
         boolean isStudentExist = studentRepo.existsById(studentId);
         if (!isStudentExist) {
             throw new IllegalStateException("student with id " + studentId + " does not exist");
         }
         studentRepo.deleteById(studentId);
+        return new ResponseDTO("Delete Success");
     }
 }
